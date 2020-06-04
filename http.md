@@ -54,15 +54,57 @@ It became the most convenient way to quickly and reliably move data on the web
 
 # How the Web works ?  And How HTTP makes that possible
 
-If i type "www.mywebsite.com/products/my.html", what will happend?
+The URL  format is:
 
-1st , __THE INTERNET__ will establish the connection of the two computers(client and server),using the __TCP/IP__ suite of protocols ,it establish the connection using a combination of cable media and wireless media and do all the necessary work to prepare the environment for the two computers to talk via the HTTP protocol.
+```
+schme://domain:port/path?query_string#fragment_id
 
-2nd, when the connections establishs,the client sends a request called a __HTTP message__ and because the HTTP is a connectionless protocol the client __disconnects__ from the server,waiting for the response . 
+schme: http,https,ftp,etc.
+domain: www.google.com,etc.
+port:80(default),3000,etc.
+path:path_to_the_resource,this can be a series of folder names if you're getting a static web page that ends in the name of the file and its extenion
 
-3rd, the server on the other side __process the request__ ,__prepare the response__, and __establishes the connection__ again and __send back the response__ again in  form of an __HTTP message__ to the client.
+```
 
-4th, then the two computers __completely disconnect__.
+URLs also appear in HTML tags inside the resource,these can be for other resource like images,javascript,css, the attributes in these tags contain URLs that tell the browser go to location. for example:
+
+```HTML
+<a href=URL> //when user click this, go to that page
+<img src=URL> // go to this location and go get the file,it's a image, i wantto display it.
+<script src=URL> // go to this location get the js and i want to run it.
+<link rel=URL> //go to get the css , i want to render the page
+```
+
+URLs also appear in HTML tags for resources used in the page(fetched __automatically__) and,of cource,hyperlinks(fetched __on click__).
+
+
+
+
+
+If you type "www.mywebsite.com/products/my.html", what will happend?
+
+- 1st , __THE INTERNET__ will establish the connection of the two computers(client and server),using the __TCP/IP__ suite of protocols ,it establish the connection using a combination of cable media and wireless media and do all the necessary work to prepare the environment for the two computers to talk via the HTTP protocol.
+
+- 2nd, when the connections establishs,the client sends a request called a __HTTP message__ and because the HTTP is a connectionless protocol the client __disconnects__ from the server,waiting for the response . 
+
+- 3rd, the server on the other side __process the request__ ,__prepare the response__, and __establishes the connection__ again and __send back the response__ again in  form of an __HTTP message__ to the client.
+
+- 4th, the client(browser) accept the html file and __parses the HTML__,parsing is a word that means it goes and gets the file and breaks it up into pieces,and then starts trying to figure out what to do with all the pieces,HTML contains the text content for a web page plus the structure of the web page,and also ,HTML contains links to other resouces (js,link,CSS,img),__the next thing__ the browser does is it goes out and using those UTLs,it __fetch those resources__ if there are __images__ that the web page needs or videos or anything . the browser goes out and requests those files ,while those files are coming back it goes out and it looks for any  __CSS__ that it needs, __Finally__,the web browser is going to go out and find any __JavaScript__ files that the web page needs and its going to request them as well. JavaScript is how we described how a web page should behave nce it's all loaded  and ready to go.
+
+  ​       the order of the fetch looks like:
+
+  ```bash
+  1. HTML(content,structure,URLs)
+  2. Media(content)
+  3. stylesheet/CSS (appearance)
+  4. JavaScript(perfomance)
+  ```
+
+  .A browser has a couple of simple behaviors that it knows how to do automatically,such as click a form submit button,it knows how to submit a form, but for all the other things you want a web page to be able to do all the enteractive elements you use JavaScript. And the web browser __goes out and ask for__ all of these files using those get commands, the various servers that contain these resources send them back,this can take a while, but as they return, the browser assembles then into the __document__,and stores it's work in an internal data strcture of some sort different for every browser, but in the end , the point of these whole exercise is  for it to __render this document__,that is to draw the document on the screen,it renders a visible page and puts it in the window of your browser . It __also publishes__ the document as a __document object model(DOM)__, it's a standard way to describe web page and other documents that allows us to traverse them and manipulate then.
+
+  
+
+- 5th, then the two computers __completely disconnect__.
 
 # HTTP message
 
