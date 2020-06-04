@@ -1,4 +1,10 @@
-http
+
+
+#     __*the HTTP protocol & how the web works*__
+
+​                                      
+
+# The HTTP protocol
 
 __HTTP__ = __H__yper__t__ext __T__ransfer __P__rotocol
 
@@ -58,5 +64,73 @@ If i type "www.mywebsite.com/products/my.html", what will happend?
 
 4th, then the two computers __completely disconnect__.
 
+# HTTP message
+
+A typical HTTP message include 3 parts: __Start line, Headers,Body__, they all contain plaintext information ,unless if the Body contains binary data,but in general, HTTP messages are plaintext and easy to read. The information in the three sections very dependent on the HTTP message whether  it is a request or a response. A request HTTP message differs from a response one. 
+
+#### Differs from Request and Response
+
+| --\\--     | Request http message                             | response http message                            |
+| ---------- | ------------------------------------------------ | ------------------------------------------------ |
+| Start line | Method   path/to/file.ext  http/version          | http/version  status_code                        |
+| Headers    | Name1:value1<br />Name2:value2<br />Name3:value3 | Name1:value1<br />Name2:value2<br />Name3:value3 |
+| Body       | E.g some content                                 | E.g  File requested                              |
+
+lets look at each of them
+
+#### Request HTTP message
+
+| --\\--     |                                                              |
+| ---------- | ------ |
+| Start line | Method          URI                                HTTP/VERSION<br />----------------------------------------------------------------------<br />GET                /products/my.html          HTTP/1.0 |
+| Headers    |Host:www.mywebsite.com<br/>Accept: text/html<br />Accept-language:en-us<br />etc..     |
+| Body | The Body __does not exit__ beacuse it's not needed |
+|  |  |
+
+in Start line,the HTTP vetsion is that the version that the client is using.
+
+in Headers,the host is the address of the server to which we are sending the request.  Accept-language specific the language, Accept tells the server what type of file we are requesting,it holds a MIME type as its value,MIME type looks like:
+
+```
+MIME Type : fileType/ext
+
+E.g.: image/gif 
+
+E.g.: text/html
+```
 
 
+
+#### Response HTTP message
+
+| --\\--     |                                                              |
+| ---------- | ------------------------------------------------------------ |
+| Start line | HTTP/VERSION                   STATUS CODE<br />--------------------------------------------------------------------------<br />HTTP/1.0                              200: OK |
+| Headers    | Host: www.mywebsite.com<br />Accept: text/html<br />Accept-language:en-us<br />etc. |
+| Body       | products/my.html                                             |
+
+the Response HTTP message __dont have__ a METHOD or URI because those are specifically for the requests.
+
+in Start line, status code tells the client if the request succeeded or failed, it may 200 or 404 or other codes,as below:
+
+```
+status code:
+E.g.: 200:ok
+E.g.: 404:file not found
+```
+
+
+
+# Summary
+
+- The HTTP is a __TCP/IP based__ application layer  protocol that allows web-based  applications to communicate and exchange data
+- The computers that communicate via the HTTP __must__ speak HTTP
+- The HTTP is __stateless, connectionless,and can deliver any data__
+- We use HTTP ptotocol because it is a convinient way to __quickly and reliably__ move data on the web
+- The request response cycle works on the web __via HTTP messages__
+- A HTTP message contains __three sections__,the start line,the headers,and the body
+- The HTTP request message __differs from__ the http response message
+
+
+
+ 
