@@ -622,7 +622,7 @@ tutorial.core=> (-main)
 nil
 ```
 
-# File/IO
+# File/IO/Exception
 
 ```clojure
 (ns tutorial.core
@@ -674,4 +674,80 @@ This is a sentece
 This is another sentence
 nil
 ```
+
+```bash
+srx@ipp:~/Work/myspace/clojure/tutorial$ cat test.txt 
+This is a sentece
+This is another sentence
+```
+
+# Destructoring
+
+```clojure
+(ns tutorial.core
+  (:gen-class))
+
+(use 'clojure.java.io)
+
+(defn destruct
+  []
+  (def vectVals [1 2 3 4])
+  (let [[one two & the-rest] vectVals]
+        (println one two the-rest)))
+
+(defn -main
+  "I don't do a whole lot ... yet."
+  [& args]
+  (destruct)
+  )
+```
+
+the output is:
+
+```clojure
+tutorial.core=> 
+(-main)
+1 2 (3 4)
+nil
+```
+
+# Struct Map
+
+```clojure
+(ns tutorial.core
+  (:gen-class))
+
+(use 'clojure.java.io)
+
+(defn struct-map-ex
+  []
+  (defstruct Customer :Name :Phone)
+  (def cust1 (struct Customer "Doug" 412551212))
+  (def cust2 (struct-map Customer :Nmae "Sally" :Phone 55512345))
+  (println cust1)
+  (println (:Name cust2)))
+
+(defn -main
+  "I don't do a whole lot ... yet."
+  [& args]
+  (struct-map-ex)
+  )
+```
+
+the output is :
+
+```clojure
+tutorial.core=> (-main)
+{:Name Doug, :Phone 412551212}
+nil
+nil
+```
+
+
+
+
+
+
+
+# 
 
