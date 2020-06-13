@@ -158,7 +158,7 @@ the output is:
 4 Travis
 ```
 
-# zip
+# 5. zip
 
 zip means loop two lists as one.
 
