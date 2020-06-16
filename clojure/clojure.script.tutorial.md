@@ -13,6 +13,8 @@ Leiningen 2.9.3 on Java 11.0.7 OpenJDK 64-Bit Server VM
 
 ---
 
+### $ CHAPTER 1 --   base work flow
+
 # 1. create a simple clojure project
 
 ```bash
@@ -287,3 +289,427 @@ let's have a look to see the base work flow:
    ```
    
    you will see an alert window show the message "Hello from ClojuerScript". 
+
+
+
+
+
+__Ok,above all is a very base clojures scirpt work flow.__
+
+
+
+
+
+
+
+
+
+---
+
+
+
+
+
+
+
+### $CHAPTER 2 -- Middle usage
+
+
+
+# 1. how to add a react to your project
+
+### 1. find a script src address of Reactjs. 
+
+ google "React cdn" , or go to ofiicial web in React , then find "cdn" to find version"0.14.7" , and find the cdnjs's source address,for example ,it is like below:
+
+```
+https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js
+```
+
+so, add this as script to "index.html," it like:
+
+```html
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
+```
+
+so the index.html looks like :
+
+```html
+<html>
+    <head>
+    </head>
+
+    <body>
+        <div id="cljs-target">
+        </div>
+
+        <div id="footer-javascripts">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
+            <script src="./javascripts/cljs-dev/goog/base.js"></script>
+            <script src="./javascripts/dev.js"></script>
+            <script>goog.require('helloworld.core')</script>           
+        </div>
+    </body>
+</html>
+```
+
+and the core.cljc looks like:
+
+```clojure
+(ns helloworld.core)
+
+(defn say-hello []
+  #?(:clj (println "Hello from Clojure...")
+     :cljs (js/console.log  js/React)))
+
+(say-hello)
+```
+
+then start a server by python ,check the localhost ,and F12 you will see the React Object. 
+
+It means you add React to your project successfully.
+
+
+
+__*TIPS*__:
+
+you can only maintain the :
+
+```clojure
+#?(:cljs (js/console.log  js/React))
+or 
+(js/console.log  js/React)
+```
+
+at the same time,change the ext of "core.cljc" to "core.cljs",
+
+so, the core.cljs looks like:
+
+```clojure
+## core.cljs !!!
+## core.cljs !!!
+
+
+(ns helloworld.core
+  
+  (:require [reagent.core :as reagent ]))
+
+(defn multiply-numbers [x y]
+  (* x y ))
+(defn say-hello []  
+     (js/console.log  (multiply-numbers 5 10)))
+
+(say-hello) 
+```
+
+OR "core.cljc":
+
+```clojure
+# core.cljc  !!
+# core.cljc  !!
+
+(ns helloworld.core
+  
+  (:require [reagent.core :as reagent ]))
+
+(defn multiply-numbers [x y]
+  (* x y ))
+
+(defn say-hello []
+  #?(:cljs (js/console.log  (multiply-numbers 5 10))))
+
+(say-hello) 
+```
+
+
+
+
+
+# 2. how to use Reagent in ClojureScript
+
+add require in core.cljs, :
+
+```clojure
+ (:require [reagent.core :as reagent ]
+```
+
+so the core.cljs looks like:
+
+```clojure
+(ns helloworld.core
+  
+  (:require [reagent.core :as reagent ]))
+
+(defn multiply-numbers [x y]
+  (* x y ))
+
+(defn say-hello []
+   (js/console.log  (multiply-numbers 5 10)))
+
+(say-hello) 
+```
+
+then it's ok. 
+
+start the server by pyhton ,then you can see the resutlt in browser' s consooe log.
+
+
+
+# 3. how to use ClojureScript and React to add html element
+
+### eg-1  base tag
+
+for a play, let's change the version of react from the newst 1.1.0-alpha2 to 0.5.0, so the project.clj will look like :
+
+```clojure
+(defproject helloworld "0.1.0-SNAPSHOT"
+  :description "FIXME: write description"
+  :url "http://example.com/FIXME"
+  :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
+            :url "https://www.eclipse.org/legal/epl-2.0/"}
+  :dependencies [[org.clojure/clojure "1.10.1"];1.10.1 is newest, after "lein new helloworld" runing,it added automatically
+                 [org.clojure/clojurescript "1.10.741"];1.10.741 is newst in 2020年 06月 14日 星期日 18:01:54 CST
+                 [reagent "0.5.0"]];1.1.0-alpha2 is newst in 2020年 06月 14日 星期日 18:01:54 CST
+
+  :cljsbuild {:builds [{:id "dev"
+                        :source-paths ["src"]
+                        ;:figwheel true
+                        :compiler
+                        {:optimizations :none
+                         :output-to "resources/public/javascripts/dev.js"
+                         :output-dir "resources/public/javascripts/cljs-dev/"
+                         :pretty-print true
+                         :source-map true}}]}
+  :plugins [[lein-cljsbuild "1.1.8"];1.1.8 is newest in 2020年 06月 14日 星期日 18:01:54 CST
+            #_[lein-figwheel "0.3.7"]]
+
+  :repl-options {:init-ns helloworld.core}
+  :main helloworld.core);add main as the entry 
+```
+
+and change the content of core.cljs to:
+
+```clojure
+(ns helloworld.core
+  
+  (:require [reagent.core :as reagent ]))
+
+(defn app[]
+  [:h1 {:class "title"} "Hello from a Clojure data strcture... not JSX... wow"])
+
+(reagent/render  [app] (js/document.querySelector "#cljs-target"))
+```
+
+and then:
+
+```
+lein cljsbuild auto dev
+```
+
+in another terminal:
+
+```
+python -m http.server 8080
+```
+
+and let's view :
+
+```html
+http://localhost:8080/resources/public/index.html
+```
+
+we can see the sentence on the web page.
+
+```
+Hello from a Clojure data strcture... not JSX... wow
+```
+
+
+
+
+
+### eg-2  loop with tag
+
+change the core.cljs to :
+
+```clojure
+(ns helloworld.core
+  
+  (:require [reagent.core :as reagent ]))
+
+
+(defn app[]
+  [:div {}
+   (for [i (range 10)]
+       [:h1 i])])
+
+(reagent/render  [app] (js/document.querySelector "#cljs-target"))
+```
+
+you can see the div content in browser.
+
+
+
+### eg-3 if-else with tag
+
+core.cljs:
+
+```clojure
+(ns helloworld.core
+  
+  (:require [reagent.core :as reagent ]))
+
+
+(defn app[]
+  [:div {}
+    [:h1 {:class (if (> 55 13) "active")} "Some Text"]])
+
+(reagent/render  [app] (js/document.querySelector "#cljs-target"))
+```
+
+the "#cljs-target" in the code is the name of a div in "index.html".
+
+you can see a class named "active" in h1 element. as the image shows.
+
+![image-20200616070928787](html.element.if-else.class.png)
+
+if you change (> 55 13) to (> 55 63) ,then there will be NO class named "atcive".
+
+
+
+
+
+### eg-4  call a variable
+
+core.cljs:
+
+```clojure
+(ns helloworld.core
+  
+  (:require [reagent.core :as reagent ]))
+
+(def app-state 
+  (reagent/atom 
+   {:message "Hello from App State"}))
+
+(defn app[]
+  [:div {}
+    [:h1 {:class (if (> 55 13) "active")} (:message @app-state)]])
+
+(reagent/render  [app] (js/document.querySelector "#cljs-target"))
+```
+
+then  view :
+
+```
+http://localhost:8080/resources/public/index.html
+```
+
+you will see the conent:
+
+```
+Hello from App State
+```
+
+
+
+
+
+### eg-5 show sth in div
+
+core.cljs:
+
+```
+(ns helloworld.core
+  
+  (:require [reagent.core :as reagent ]))
+
+(def app-state 
+  (reagent/atom 
+   {:message "Hello from App State"}))
+
+(defn app[]
+  [:div {}  "Some text from VSCode"])
+    
+(reagent/render  [app] (js/document.querySelector "#cljs-target")) 
+```
+
+then you can see :
+
+```
+Some text from VSCode
+```
+
+
+
+### eg-6  js/timmer
+
+core.cljs:
+
+```clojure
+(ns helloworld.core
+  
+  (:require [reagent.core :as reagent ]))
+
+(def app-state 
+  (reagent/atom 
+   {:message "Hello from App State"}))
+
+(defn app[]
+  [:div {}  (:message @app-state)])
+    
+
+(js/setTimeout
+  (fn [] (swap! app-state assoc-in [:message] "New Message... ")) 2000 )
+
+
+(reagent/render  [app] (js/document.querySelector "#cljs-target")) 
+```
+
+when you run this, 2 seconds later, the text will changed from :
+
+```
+Hello from App Stat
+```
+
+to:
+
+```
+New Message... 
+```
+
+
+
+### eg-7 tag nested
+
+core.cljs:
+
+```clojure
+(ns helloworld.core
+  
+  (:require [reagent.core :as reagent ]))
+
+(def app-state 
+  (reagent/atom 
+   {:message "Hello from App State"}))
+
+(defn header [message]
+  [:div {}
+   [:h1 {:class "title"} message]])
+
+(defn app[]
+  [:div {:class "container"}  
+   [header (:message @app-state)]])
+    
+
+(reagent/render  [app] (js/document.querySelector "#cljs-target")) 
+```
+
+then ,the browser's elment will look like:
+
+![image-20200616083856562](html.tag.nest.png)
+
+we can see the class "title" and "container".
+
+
+
