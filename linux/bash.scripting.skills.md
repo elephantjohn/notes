@@ -184,5 +184,189 @@ srx@ipp:~/Work/notes/linux$ ./test.sh  7 b8 adf iy
 4
 ```
 
+## 1.5 If Statement ( If / If-then / If-elif-else)
+
+SEE THE GRAPH BELOW:
+
+WE HAVE interger comparison and string comparising !
+
+![bash-integer-comparison](bash-integer-comparison.png)
+
+
+
+### 1.5.1 -eq
+
+```bash
+#!/bin/bash
+
+ count=10
+
+if [ $count -eq 10 ]
+then
+    echo "condition is true"
+fi
+```
+
+the output is:
+
+```bash
+condition is true
+```
+
+### 1.5.2 -ne
+
+```bash
+#!/bin/bash
+
+ count=10
+
+if [ $count -ne 9 ]
+then
+    echo "condition is true"
+fi
+```
+
+the output is:
+
+```bash
+condition is true
+```
+
+### 1.5.3     >
+
+```bash
+#!/bin/bash
+
+ count=10
+
+if [ $count > 9 ]
+then
+    echo "condition is true"
+fi
+```
+
+the output is:
+
+```bash
+condition is true
+```
+
+ETC...
+
+### 1.5.4     == / =
+
+```bash
+#!/bin/bash
+
+word=abc
+
+if [ $word == "abc" ]
+#if [ $word = "abc" ] # singal = also works
+
+then
+    echo "condition is true"
+fi
+```
+
+the output is:
+
+```bash
+condition is true
+```
+
+### 1.5.5    <   
+
+compare the ASCII value
+
+the [ ] cant work
+
+```bash
+#!/bin/bash
+
+word=abc
+
+if [ $word < "bbc" ]
+then
+    echo "condition is true"
+fi
+```
+
+the output is :
+
+```bash
+./test.sh: line 5: bbc: No such file or directory
+```
+
+BUT [[ ]] works :
+
+```bash
+#!/bin/bash
+
+word=abc
+
+if [[ $word < "bbc" ]]
+then
+    echo "condition is true"
+fi
+```
+
+the output is:
+
+```bash
+condition is true
+```
+
+
+
+__** TIPS**__:
+
+the [[ ]] means : when campare strings in bash, trans the value in ASCII alphabetical order. so ,when you compare strints and  use "<" , ">" , you use "[[ ]]" ,but when you use "==","=", or "!=", you dont need to use "[[ ]]" , "[ ]" also works. 
+
+### 1.5.6   !=
+
+```bash
+#!/bin/bash
+
+word=abc
+
+if [ $word != "bbb" ]  # the [] and [[]] all works
+then
+    echo "condition  is true"
+fi
+```
+
+the output is:
+
+```bash
+condition  is true
+```
+
+
+
+### 1.5.7 else / elif
+
+```bash
+#!/bin/bash
+
+word=a
+
+if [[ $word = "b" ]]
+then
+    echo "condition b is true"
+elif [[ $word == "a" ]] #has a blank after right "
+#elif [[ $word == "a"]]  #error, becaue no blank after right "
+then
+    echo "condition a is true"
+else 
+    echo "condition is false"
+fi
+```
+
+the output is:
+
+```bash
+condition a is true
+```
+
 
 
