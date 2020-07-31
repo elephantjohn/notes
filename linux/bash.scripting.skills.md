@@ -158,5 +158,31 @@ Name: AHSDKFLHA
 
 
 
-## 1.4 
+## 1.4 pass argument to a bash-script
+
+```bash
+#!/bin/bash
+
+echo $0 $1 $2 $3  ' > echo $0 $1 $2 $3'
+
+args=("$@")
+
+echo ${args[0]} ${args[1]} ${args[2]} ${args[3]}  
+echo ${args[0]} ${args[1]} ${args[2]} ${args[3]}  ${args[4]}  ${args[5]}
+echo $@ #echo all the params except [0]
+echo $#   #the number of argument pass to the bash
+```
+
+the output is:
+
+```bash
+srx@ipp:~/Work/notes/linux$ ./test.sh  7 b8 adf iy
+./test.sh 7 b8 adf  > echo $0 $1 $2 $3
+7 b8 adf iy
+7 b8 adf iy  #same as above,the args[4] and args[5] is not here because not input by the user.
+7 b8 adf iy
+4
+```
+
+
 
