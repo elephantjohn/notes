@@ -1,6 +1,7 @@
-# 1. Variables
 
-## 1.1. system variables
+
+## 1.1.  Variables  
+#### 1.1.1 system variables
 
 ```bash
 #!/bin/bash
@@ -21,7 +22,7 @@ our home directory is /home/srx
 our current working directory is /home/srx/Work/notes/linux
 ```
 
-## 1.2. user variables
+####  1.1.2. user variables
 
 ```bash
 #!/bin/bash
@@ -51,6 +52,8 @@ val = 10    #has blank,error!
 name=Mark   #no  blank,OK!
 val=10      #no  blank,OK!
 ```
+
+## 
 
 
 
@@ -138,7 +141,7 @@ Names: tom,jonh
 Names: ${names[0]},${names[1]}
 ````
 
-### 1.4.5  read default input
+### 1.3.5  read default input
 
 ```echo
 #!/bin/bash
@@ -366,6 +369,157 @@ the output is:
 
 ```bash
 condition a is true
+```
+
+### 1.5.8       -z
+
+```bash
+#!/bin/bash
+
+word=""
+
+if [ $word -z ]
+then
+    echo " condition  is true"
+fi
+```
+
+the output is:
+
+```bash
+ condition  is true
+```
+
+
+
+## 1.6 File test operators
+
+#### 1.6.1   -e (exists)
+
+```bash
+#!/bin/bash
+
+echo  -e "Enter the name of file :\c"  # this e means '\' in '\c' will be interpretor rather than echo by a normal string, the '\c' wont make a next line, so user can input the file name in the same bash line.
+read file_name
+
+if [ -e $file_name ] #if exist
+then
+    echo "$file_name found"
+else
+    echo "$file_name not found"
+fi
+```
+
+now ,if i touch a agb in current bash script dir, the  output is:
+
+```bash
+Enter the name of file :abg
+abg found
+```
+
+
+
+#### 1.6.2  -f (is a regular file)
+
+```bash
+#!/bin/bash
+
+echo  -e "Enter the name of file :\c"
+read file_name
+
+if [ -f $file_name ] # check if a regular file or not.
+then
+    echo "$file_name found"
+else
+    echo "$file_name not found"
+fi
+```
+
+now if you mkdir a abg_dir, the output is:
+
+```bash
+Enter the name of file :abg_dir
+abg_dir not found
+```
+
+
+
+#### 1.6.3    -d (is a directory or not)
+
+```bash
+#!/bin/bash
+
+echo  -e "Enter the name of file :\c"
+read file_name
+
+if [ -d $file_name ]
+then
+    echo "$file_name found"
+else
+    echo "$file_name not found"
+fi
+```
+
+now if you mkdir a abg_dir, the output is:
+
+```
+Enter the name of file :abg_dir
+abg_dir not found
+```
+
+
+
+#### 1.6.4   -b (is a binrary file)
+
+if a jpg,video, it's -b
+
+#### 1.6.5    -c (?)
+
+galleary ?
+
+#### 1.6.6  -s (is not empty)
+
+```bash
+#!/bin/bash
+
+echo  -e "Enter the name of file :\c"
+read file_name
+
+if [ -s $file_name ]
+then
+    echo "$file_name is not empty"
+else
+    echo "$file_name is empty"
+fi
+```
+
+if the filename is not exist, it's empty. 
+
+if you vim the file as some charators , its not empty
+
+#### 1.6.7     -r / -w / -x  
+
+if the filename has a read /write /execute permission.
+
+```bash
+#!/bin/bash
+
+echo  -e "Enter the name of file :\c"
+read file_name
+
+if [ -r $file_name ]
+then
+    echo "$file_name can be read"
+else
+    echo "$file_name can not be read"
+fi
+```
+
+if the file has the read permission, the output is :
+
+```bash
+Enter the name of file :abg
+abg can be read
 ```
 
 
