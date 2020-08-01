@@ -524,3 +524,82 @@ abg can be read
 
 
 
+## 1.7 How to append output to the end of text file
+
+```bash
+#!/bin/bash
+
+echo  -e "Enter the name of file :\c"
+read file_name
+
+if [ -f $file_name ]
+then
+    if [ -w  $file_name ]
+    then
+        echo "Type some text data, to quie press ctrl+d"
+        cat >>  $file_name   #append
+        cat >  $file_name    # over write
+    else
+        echo "the file do not have write permissions"
+    fi
+else
+    echo "$file_name not exists"
+fi
+```
+
+
+
+## 1.8 Logical 'AND' Operator
+
+```bash
+#!/bin/bash
+
+
+age=25
+
+if [ "$age" -gt  18 ] && [ $age -lt 30 ] # -gt means greater than, -lt means less than
+then
+    echo " 18 < age <30"
+fi
+```
+
+the output is:
+
+```bash
+ 18 < age <30
+```
+
+
+
+or use '-a'  as  meaning of 'and',use '[ ]' not '[[ ]]'
+
+```bash
+#!/bin/bash
+
+
+age=25
+
+if [ "$age" -gt  18 -a $age -lt 30 ]
+then
+    echo " 18 < age <30"
+fi
+```
+
+or use '[[ ]]' and &&
+
+```bash
+#!/bin/bash
+
+
+age=25
+
+if [[ "$age" -gt  18 && $age -lt 30 ]]
+then
+    echo " 18 < age <30"
+fi
+```
+
+
+
+## 1.9  Logical 'OR' Operator
+
