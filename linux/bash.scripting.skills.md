@@ -603,3 +603,171 @@ fi
 
 ## 1.9  Logical 'OR' Operator
 
+```bash
+#!/bin/bash
+
+
+age=60
+
+if [ "$age" -gt  18 ] || [ $age -lt 30 ] # -gt means greater than
+then
+    echo " 18 < age <30"
+else
+    echo "age not valid"
+fi
+```
+
+the output is:
+
+```bash
+ 18 < age <30
+```
+
+
+
+or, you can use '-o':
+
+```bash
+#!/bin/bash
+
+
+age=60
+
+if [ "$age" -gt  18  -o $age -lt 30 ] # -gt means greater than
+then
+    echo " 18 < age <30"
+else
+    echo "age not valid"
+fi
+```
+
+or ,you can use:
+
+```bash
+#!/bin/bash
+
+
+age=60
+
+if [[ "$age" -gt  18  || $age -lt 30 ]] # -gt means greater than
+then
+    echo " 18 < age <30"
+else
+    echo "age not valid"
+fi
+```
+
+
+
+## 1.10  Perform arithmetic operations
+
+```bash
+#!/bin/bash
+
+num1=20
+num2=5
+
+echo "===000==="
+echo $((num1 + num2))
+echo $(( num1 + num2 ))
+echo 20+5
+echo
+
+echo "===aaa==="
+echo $(( num1 - num2 ))
+echo $(( num1 * num2 ))
+echo $(( num1 / num2 ))
+echo $(( num1 % num2 ))
+echo
+
+echo "===bbb==="
+echo $((num1 - num2))
+echo $((num1 * num2))
+echo $((num1 / num2))
+echo $((num1 % num2))
+echo
+
+echo "===ccc==="
+echo $(expr $num1 + $num2)
+echo $(expr $num1 - $num2)
+echo $(expr $num1 * $num2)
+echo $(expr $num1 \* $num2)
+echo $(expr $num1 / $num2)
+echo $(expr $num1 % $num2)
+```
+
+the output is:
+
+```bash
+===000===
+25
+25
+20+5
+
+===aaa===
+15
+100
+4
+0
+
+===bbb===
+15
+100
+4
+0
+
+===ccc===
+25
+15
+expr: syntax error
+
+100
+4
+0
+```
+
+## 1.11   Float point math operations in bash | bc Command
+
+```bash
+#!/bin/bash
+
+num1=20.5
+num2=5
+
+echo "20.5+5" | bc
+echo "$num1+$num2" | bc
+echo "20.5-5" | bc
+echo "$num1-$num2" | bc
+echo "20.5*5" | bc
+echo "20.5/5" | bc
+echo "scale=4;20.5/5" | bc
+echo "20.5%5" | bc
+
+num=27
+echo "scale=2;sqrt($num)" | bc
+num=4
+echo "scale=2;sqrt($num)" | bc -l
+echo "scale=2;3^3" | bc  -l  # man bc ,to see -l (math lib)
+
+```
+
+the output is:
+
+```bash
+25.5
+25.5
+15.5
+15.5
+102.5
+4
+4.1000
+.5
+5.19
+2.00
+27
+```
+
+
+
+## 1.12   The case statement
+
