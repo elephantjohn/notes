@@ -850,3 +850,74 @@ Enter some charector : ahsdkfhas
 Unkonw input
 ```
 
+
+
+
+
+##  1.14   Array variables
+
+```bash
+#! /bin/bash
+
+os=('ubuntu' 'windows' 'kali')
+os[3]='mac'
+echo "${os[@]}"
+echo "${os[1]}"
+echo "${!os[@]}"
+echo "${#os[@]}"
+echo 
+
+os[0]='mac'
+echo "${os[@]}"
+echo 
+
+unset os[2] #remove element 'kali'
+echo "${os[@]}"
+echo 
+
+os[6]='pi'
+echo "${!os[@]}"
+echo "${os[@]}"
+echo "${#os[@]}"
+echo
+
+string=dasasdfkhahd
+echo "${string[@]}"
+echo "${string[0]}"
+echo "${string[1]}"
+echo "the above line  of string[1] is empty"
+echo "${#string[@]}"
+```
+
+the output is:
+
+```bash
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+ubuntu windows kali mac
+windows
+0 1 2 3
+4
+
+mac windows kali mac
+
+mac windows mac
+
+0 1 3 6
+mac windows mac pi
+4
+
+dasasdfkhahd
+dasasdfkhahd
+
+the above line  of string[1] is empty
+1
+```
+
+
+
+##  1.15  WHILE  loops
+
+```
+
+```
+
