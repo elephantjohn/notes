@@ -948,3 +948,148 @@ srx@ipp:~/Work/notes/linux$ ./test.sh
 10
 ```
 
+
+
+
+
+##  1.16 Using sleep and  open terminal with WHILE loops
+
+#### 1.16.1 example 1
+
+```BASH
+#! /bin/bash
+
+n=1
+
+while [ $n -le 10 ] #less or equal to 10
+do 
+    echo "$n"
+    ((n++))  # the same as above
+    sleep 1 # sleep 1 seconds
+done
+```
+
+the output is:
+
+```
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+```
+
+#### 1.16.2  example 2
+
+```bash
+#! /bin/bash
+
+n=1
+
+while [ $n -le 3 ] #less or equal to 10
+do 
+    echo "$n"
+    ((n++))  # the same as above
+    gnome-terminal &  # open a terminal
+done
+```
+
+the output is:
+
+3 terminal windows were opened.
+
+
+
+##  1.17  Read a file content in Bash
+
+#### 1.17.1  example1
+
+we have a file named test.sh,the content is as below:
+
+MAKE THE MOUSE POINTER TO NEXT EMPTY LINE!!! OR THE LAST LINE WONT SHOW.
+
+```bash
+#! /bin/bash
+
+while read p 
+do
+    echo $p 
+done < test.sh  # read from file "test.sh"
+                # here is an empty line
+```
+
+then run the bash, the output is:
+
+```
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+#! /bin/bash
+
+while read p
+do
+echo $p
+done < test.sh # read from file "test.sh"
+# here is an empty line
+```
+
+#### 1.17.2  example 2
+
+MAKE THE MOUSE POINTER TO NEXT EMPTY LINE!!! OR THE LAST LINE WONT SHOW.
+
+```bash
+#! /bin/bash
+
+cat test.sh | while read p 
+do
+    echo $p 
+done 
+                # here is an empty line
+```
+
+the output is:
+
+```bash
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+#! /bin/bash
+
+cat test.sh | while read p
+do
+echo $p
+done
+# here is an empty line
+```
+
+####  1.17.3 example 3  using IFS
+
+```bash
+#! /bin/bash
+
+while IFS= read -r p
+do
+    echo $p
+done < test.sh
+         # here is an empty line
+```
+
+the output is:
+
+```BASH
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+#! /bin/bash
+
+while IFS= read -r p
+do
+echo $p
+done < test.sh
+# here is an empty line
+```
+
+
+
+##  1.18
+
