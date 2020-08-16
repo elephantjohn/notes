@@ -1246,3 +1246,203 @@ dir1 dir2 dir3
 
 ## 1.21  Select loop
 
+#### 1.21.1  ex1
+
+```bash
+#! /bin/bash
+
+select varName in mark john tom ben
+do
+    echo "$varName selected"
+done
+```
+
+the output :
+
+```bash
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+1) mark
+2) john
+3) tom
+4) ben
+#? 2
+john selected
+#? 3
+tom selected
+#? 4
+ben selected
+#? 7
+ selected
+```
+
+####  1.21.2 ex2
+
+```bash
+#! /bin/bash
+
+select varName in mark john tom ben
+do
+    case $varName in 
+    mark)
+        echo mark selected
+        ;;
+    john)
+        echo john selected
+        ;;
+    tom)
+        echo tom selected
+        ;;
+    ben)
+        echo ben selected
+        ;;
+    *)
+        echo "Error,please provide the no. between 1..4"
+    esac
+done
+```
+
+the output:
+
+```bash
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+1) mark
+2) john
+3) tom
+4) ben
+#? 8
+Error,please provide the no. between 1..4
+#? 2
+john selected
+#? 
+```
+
+
+
+## 1.22   Break and continue
+
+```bash
+#! /bin/bash
+
+for ((i=1;i<=10;i++))
+do
+    if [ $i -eq 3 -o $i -eq 6 ]
+    then
+        continue # will continue the loop
+        #break   # will break the loop
+    fi
+    echo "$i"
+done
+```
+
+the output :
+
+```bash
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+1
+2
+4
+5
+7
+8
+9
+10 
+```
+
+
+
+## 1.23  Functions
+
+```bash
+#! /bin/bash
+
+function print(){
+    echo $1 $2 $3
+}
+
+quit(){
+    exit
+}
+
+print Hello  World   Again
+ 
+
+echo "foo"
+quit
+```
+
+the output:
+
+```bash
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+Hello World Again
+foo
+```
+
+## 1.24  Local variables
+
+```bash
+#! /bin/bash
+
+function print(){
+    #name=$1        #outside will change too
+    local name=$1   #outside variable wont change
+    echo "the name is $name"
+}
+
+name="Tom"
+
+echo "the name is $name before"
+
+print Max 
+
+echo "the name is $name  after"
+
+```
+
+the output:
+
+```bash
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+the name is Tom before
+the name is Max
+the name is Tom  after
+```
+
+
+
+## 1.25   Function example
+
+```bash
+#! /bin/bash
+
+usage(){
+    echo "you need to provide an argument : "
+    echo "usage : $0  file_name"
+} 
+
+is_file_exist(){
+    local file="$1"  # $1 is the first function trans from the caller
+    [[ -f "$file" ]] && return 0 || return 1
+} 
+
+[[ $# -eq 0  ]] && usage
+
+if (is_file_exist "$1")  # $1 is the first function trans from the bash
+then
+    echo "File found"
+else
+    echo "File not found"
+fi
+```
+
+the output:
+
+```bASH
+srx@ipp:~/Work/notes/linux$ ./test.sh abg
+File found
+srx@ipp:~/Work/notes/linux$ ./test.sh abgg
+File not found
+```
+
+##  1.26  Readonly command
+
