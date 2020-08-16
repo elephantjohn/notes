@@ -917,7 +917,34 @@ the above line  of string[1] is empty
 
 ##  1.15  WHILE  loops
 
+```bash
+#! /bin/bash
+
+n=1
+
+#while [ $n -le 10 ] #less or equal to 10
+while (($n <= 10))  # the same as above
+do 
+    echo "$n"
+    n=$((n+1))  
+   # ((n++))  # the same as above
+   # ((++n))  # the same as above
+done
 ```
 
+the output is:
+
+```bash
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
 ```
 
