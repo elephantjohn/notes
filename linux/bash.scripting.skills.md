@@ -771,3 +771,82 @@ the output is:
 
 ## 1.12   The case statement
 
+```bash
+#! /bin/bash
+
+vehicle=$1
+
+case $vehicle in 
+    "car" )
+        echo "Rent of $vehicle is 100 dollar" ;;
+    "van" )
+        echo "Rent of $vehicle is 80 dollar" ;;
+    "bicycle" )
+        echo "Rent of $vehicle is50 dollar" ;;
+    "truck" )
+        echo "Rent of $vehicle is 150 dollar" ;;
+    * )
+        echo "Unkonw vehicle" ;;
+esac
+```
+
+the output is:
+
+```bash
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+Unkonw vehicle
+srx@ipp:~/Work/notes/linux$ ./test.sh car
+Rent of car is 100 dollar
+srx@ipp:~/Work/notes/linux$ 
+```
+
+## 1.13  The case statement Example
+
+```BASH
+#! /bin/bash
+
+
+echo -e "Enter some charector : \c"
+read value
+
+
+case $value in 
+    [a-z] )
+        echo "User entered $value a to z" ;;
+    [A-Z] )
+        echo "User entered $value A to Z" ;;
+    [0-9] )
+        echo "User entered $value 0 to 9" ;;
+    ? ) #ANY charator , only one charactor
+        echo "User entered $value a special charactor" ;;
+    * ) #ANY charator , more than one one charactor
+        echo "Unkonw input" ;;
+esac
+```
+
+the output is:
+
+```
+srx@ipp:~/Work/notes/linux$ ./test.sh K
+Enter some charector : K
+User entered K a to z
+
+srx@ipp:~/Work/notes/linux$ LANG=c
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+Enter some charector : k
+User entered k A to Z
+
+#the "LANG" environment variable indicates the language/local and coding, where "C" is the language setting
+
+
+
+
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+Enter some charector : &
+User entered & a special charactor
+
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+Enter some charector : ahsdkfhas
+Unkonw input
+```
+
