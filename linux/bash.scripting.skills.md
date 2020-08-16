@@ -1446,3 +1446,214 @@ File not found
 
 ##  1.26  Readonly command
 
+```bash
+#! /bin/bash
+
+var=31
+
+readonly var
+
+var=50
+
+echo "var ==> $var"
+
+hello(){
+    echo "Hello World"
+}
+
+readonly -f hello  # -f function
+
+hello(){
+    echo "Hello World a"  # modify a readonly function
+}
+
+readonly -f  # give all the readonly functions
+
+```
+
+the output:
+
+```bash
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+./test.sh: line 7: var: readonly variable
+var ==> 31
+./test.sh: line 19: hello: readonly function
+hello () 
+{ 
+    echo "Hello World"
+}
+declare -fr hello
+srx@ipp:~/Work/notes
+```
+
+
+
+## 1.27    Signals and Traps
+
+
+
+#### 1.27.1 signals
+
+use the command to check signals
+
+```bash
+srx@ipp:~/Work/notes/linux$  man 7 signal 
+
+
+xxxx
+ Signal     Value     Action   Comment
+       ----------------------------------------------------------------------
+       SIGHUP        1       Term    Hangup detected on controlling terminal
+                                     or death of controlling process
+       SIGINT        2       Term    Interrupt from keyboard
+       SIGQUIT       3       Core    Quit from keyboard
+       SIGILL        4       Core    Illegal Instruction
+       SIGABRT       6       Core    Abort signal from abort(3)
+       SIGFPE        8       Core    Floating-point exception
+       SIGKILL       9       Term    Kill signal
+
+       SIGSEGV      11       Core    Invalid memory reference
+       SIGPIPE      13       Term    Broken pipe: write to pipe with no
+                                     readers; see pipe(7)
+       SIGALRM      14       Term    Timer signal from alarm(2)
+       SIGTERM      15       Term    Termination signal
+       SIGUSR1   30,10,16    Term    User-defined signal 1
+       SIGUSR2   31,12,17    Term    User-defined signal 2
+       SIGCHLD   20,17,18    Ign     Child stopped or terminated
+       SIGCONT   19,18,25    Cont    Continue if stopped
+       SIGSTOP   17,19,23    Stop    Stop process
+       SIGTSTP   18,20,24    Stop    Stop typed at terminal
+       SIGTTIN   21,21,26    Stop    Terminal input for background process
+       SIGTTOU   22,22,27    Stop    Terminal output for background process
+---------------------------------------------
+kill -9 xxxx
+ctrl+c
+ctrl+z
+```
+
+#### 1..27.2  traps
+
+
+
+###### 1.27.2.1  ex1
+
+```bash
+#! /bin/bash
+
+trap "echo EXIT command is detected" 0  # if signal 0 occured, then the trap run 
+
+echo "Hello world"
+
+exit 0
+```
+
+the output :
+
+```
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+Hello world
+EXIT command is detected
+```
+
+###### 1.27.2.2 
+
+```bash
+#! /bin/bash
+
+trap "echo EXIT command is detected" SIGINT  # if signal ctrl+c occured, then the trap run 
+
+echo "pid is $$"
+
+while((COUNT < 10))
+do
+    sleep 10
+    ((COUNT++))
+    echo $COUNT
+done
+
+exit 0
+```
+
+the output :
+
+```bash
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+pid is 16666
+^CEXIT command is detected
+1
+^CEXIT command is detected
+2
+^CEXIT command is detected
+3
+^CEXIT command is detected
+4
+^CEXIT command is detected
+5
+6
+^CEXIT command is detected
+7
+^CEXIT command is detected
+8
+9
+10
+```
+
+###### 1.27.2.3     ex3
+
+```bash
+#! /bin/bash
+
+file=/home/srx/Work/notes/linux/willdel.txt
+trap "rm -f $file; exit" 0 2 15  # if signa 0, 2, or 15 occurd,run the command
+echo "pid is $$"
+
+while((COUNT < 10))
+do
+    sleep 10
+    ((COUNT++))
+    echo $COUNT
+done
+
+exit 0
+```
+
+if kill -15 xxxx, the file "willdel.txt" will be delete.
+
+## 1.28   How to debug a bash script
+
+#### 1.28.1  use option  -x in terminal
+
+````bash
+srx@ipp:~/Work/notes/linux$ bash -x ./test.sh 
++ file=/home/srx/Work/notes/linux/willdel.txt
++ trap detected 0 2 15
++ echo 'pid is 17079'
+pid is 17079
++ (( COUNT < 10 ))
++ sleep 10
+````
+
+#### 1.28.2  use option -x in script
+
+```bash
+#! /bin/bash  -x
+file=/home/srx/Work/notes/linux/willdel.txt
+trap "detected" 0 2 15  # if signa 0, 2, or 15 occurd,run the command
+echo "pid is $$"
+
+while((COUNT < 10))
+do
+    sleep 10
+    ((COUNT++))
+    echo $COUNT
+done
+
+exit 0
+```
+
+#### 1.28.3 use "set -x/+x " option in script
+
+```
+
+```
+
