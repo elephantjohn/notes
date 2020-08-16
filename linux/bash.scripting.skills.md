@@ -1091,5 +1091,158 @@ done < test.sh
 
 
 
-##  1.18
+##  1.18  UNTIL loop
+
+```bash
+#! /bin/bash
+
+n=1
+until [ $n -gt 10 ]
+do
+    echo $n
+    n=$((n+1))
+    # ((++n))  #the same as above
+done
+```
+
+the output is:
+
+```bash
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+```
+
+
+
+## 1.19   For loop
+
+#### 1.19.1  ex1
+
+```bash
+#! /bin/bash
+
+for i in 1 2 3 4 5 
+# for i in {1..5}  the same as above
+# for i in {1..10..2} #{star..end..interval} : 1 3 5 7 9
+do
+    echo $i
+done
+```
+
+the output:
+
+```bash
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+1
+2
+3
+4
+5
+```
+
+#### 1.19.2  ex2
+
+````bash
+#! /bin/bash
+
+echo ${BASH_VERSION}
+for i in {1..10..2} #{star..end..interval}
+do
+    echo $i
+done
+````
+
+the output is:
+
+```bash
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+4.4.20(1)-release
+1
+3
+5
+```
+
+#### 1.19.3   ex3
+
+```baSh
+#! /bin/bash
+
+echo ${BASH_VERSION}
+for ((i=0;i<5;i++))
+do
+    echo $i
+done
+```
+
+the output is:
+
+```bash
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+4.4.20(1)-release
+0
+1
+2
+3
+4
+```
+
+## 1.20  use FOR Loop to execute commands
+
+#### 1.20.1  ex1 
+
+```bash
+#! /bin/bash
+
+for command in ls pwd date
+do
+    echo "-----------$command-----------" # give the name of command
+    $command  # execute the command
+done
+```
+
+the output:
+
+```
+srx@ipp:~/Work/notes/linux$ ./test.sh 
+-----------ls-----------
+abg   bash-integer-comparison.png  bash.skills.md        
+abgg  bash.scripting.skills.md     test.sh
+-----------pwd-----------
+/home/srx/Work/notes/linux
+-----------date-----------
+Sun Aug 16 21:11:11 CST 2020
+```
+
+#### 1.20.2   ex2
+
+```bash
+#! /bin/bash
+
+for item in *  # in current directory
+do
+    if [ -d $item ]  # if is a directory
+    then
+        echo $item  # peint the name of the directory
+    fi 
+done
+```
+
+the output:
+
+```bash
+dir1 dir2 dir3
+```
+
+
+
+## 1.21  Select loop
 
