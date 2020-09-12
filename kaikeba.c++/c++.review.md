@@ -296,3 +296,99 @@ __CONCLUSTION OF the EXAMPLE:__
 dont defination functions in .h file
 ```
 
+
+
+## googletest frame
+
+after link, the object files can generate executive file , __OR__ static link file(*.a).
+
+main.cpp:
+
+```c++
+// main.cpp
+
+#include <iostream>
+
+#include <gtest/gtest.h>
+
+using namespace std;
+
+TEST(test,add1){
+	EXPECT_EQ(add(3,4),7);
+    EXPECT_NE(add(3,4),6);
+	EXPECT_LT(add(3,4),8);
+	EXPECT_LE(add(3,4),7);
+	EXPECT_GT(add(3,4),6);
+	EXPECT_GE(add(3,4),7);
+}
+
+TEST(test,add1){
+	EXPECT_EQ(add(3,4),7);
+    EXPECT_NE(add(3,4),7);
+	EXPECT_LT(add(3,4),8);
+	EXPECT_LE(add(3,4),7);
+	EXPECT_GT(add(3,4),6);
+	EXPECT_GE(add(3,4),7);
+}
+
+
+int main()
+{
+	printf("add(3,4) = %d\n",add(3,4));   // add this line
+	return RUN_ALL_TESTS();
+}
+```
+
+build :
+
+```bash
+$ g++ -c main.cpp 
+main.cpp:3:10: fatal error: gtest/gtest.h: No such file or directory
+    3 | #include <gtest/gtest.h>
+      |          ^~~~~~~~~~~~~~~
+compilation terminated.
+```
+
+so ,add the "I" options to find the include directory;
+
+```bash
+$ g++ -I/home/ipp/Work/supporters/googletest/googletest/include -c main.cpp
+```
+
+then main.o generated.
+
+then link the main.o:
+
+```bash
+$ g++ main.o
+```
+
+the output is :
+
+```bash
+/usr/bin/ld: main.o:(.data.rel.ro._ZTV14test_add2_Test[_ZTV14test_add2_Test]+0x20): undefined reference to `testing::Test::SetUp()'
+/usr/bin/ld: main.o:(.data.rel.ro._ZTV14test_add2_Test[_ZTV14test_add2_Test]+0x28): undefined reference to `testing::Test::TearDown()'
+/usr/bin/ld: main.o: in function `test_add2_Test::~test_add2_Test()':
+main.cpp:(.text._ZN14test_add2_TestD2Ev[_ZN14test_add2_TestD5Ev]+0x26): undefined reference to `testing::Test::~Test()'
+/usr/bin/ld: main.o:(.data.rel.ro._ZTV14test_add1_Test[_ZTV14test_add1_Test]+0x20): undefined reference to `testing::Test::SetUp()'
+/usr/bin/ld: main.o:(.data.rel.ro._ZTV14test_add1_Test[_ZTV14test_add1_Test]+0x28): undefined reference to `testing::Test::TearDown()'
+/usr/bin/ld: main.o: in function `test_add1_Test::~test_add1_Test()':
+main.cpp:(.text._ZN14test_add1_TestD2Ev[_ZN14test_add1_TestD5Ev]+0x26): undefined reference to `testing::Test::~Test()'
+/usr/bin/ld: main.o:(.data.rel.ro._ZTI14test_add2_Test[_ZTI14test_add2_Test]+0x10): undefined reference to `typeinfo for testing::Test'
+/usr/bin/ld: main.o:(.data.rel.ro._ZTI14test_add1_Test[_ZTI14test_add1_Test]+0x10): undefined reference to `typeinfo for testing::Test'
+/usr/bin/ld: main.o: in function `test_add2_Test::test_add2_Test()':
+main.cpp:(.text._ZN14test_add2_TestC2Ev[_ZN14test_add2_TestC5Ev]+0x18): undefined reference to `testing::Test::Test()'
+/usr/bin/ld: main.o: in function `test_add1_Test::test_add1_Test()':
+main.cpp:(.text._ZN14test_add1_TestC2Ev[_ZN14test_add1_TestC5Ev]+0x18): undefined reference to `testing::Test::Test()'
+collect2: error: ld returned 1 exit status
+...
+...
+...
+```
+
+then add the lib source as below:
+
+```
+$ 
+```
+
