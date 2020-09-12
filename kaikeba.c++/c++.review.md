@@ -388,7 +388,16 @@ collect2: error: ld returned 1 exit status
 
 then add the lib source as below:
 
-```
-$ 
+```bash
+$ g++ -L/home/ipp/Work/supporters/googletest/build/lib main.o -lgtest -lpthread
 ```
 
+## Colorful printf function
+
+__config__:
+
+```bash
+\033[A1;A2;A3;...AN m
+```
+
+![config](./color.printf.config.png)
