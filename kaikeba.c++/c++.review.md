@@ -401,3 +401,69 @@ __config__:
 ```
 
 ![config](./color.printf.config.png)
+
+__EXAMPLE 1:__
+
+mian.cpp:
+
+```c++
+// main.cpp
+
+#include <iostream>
+
+int main()
+{
+	printf("\033[1;31;40mhello world\n");
+	printf("\033[1;31;42mhello world\033[0m\n");//"\033[0m" close the color mode
+	printf(" this line won't change color\n");
+		
+	return 0;
+}
+```
+
+we can write a Makefile to build the cpp:
+
+Makefile:
+
+```cmake
+all:
+	g++ -std=c++11  main.cpp
+```
+
+then we run make:
+
+```bash
+
+$ make
+```
+
+the output is:
+
+![output](./color.printf.config.close.mode.png)
+
+
+
+__EXAMPLE 2:__
+
+main.cpp:
+
+```c++
+#include <iostream>
+
+int main()
+{
+	printf("\033[0;1;31;40mhello world\n");//"0" to clear setting before
+	printf("\033[0;34mhello world\n");//"only overwrite 34 color, the other color are default"
+	printf("\033[0;35mhello\n");
+	printf(" this line will change color although no color setting in this line\n");
+	printf("\033[0;36mhello\033[0m\n");
+	printf(" this line won't change color because color mode close in the end of last line\n");	
+	return 0;
+}
+```
+
+
+
+the output is:
+
+![output2](./color.printf.config.close.mode.2.png)
