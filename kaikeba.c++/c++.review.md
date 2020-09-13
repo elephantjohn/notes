@@ -296,8 +296,6 @@ __CONCLUSTION OF the EXAMPLE:__
 dont defination functions in .h file
 ```
 
-
-
 ## googletest frame
 
 after link, the object files can generate executive file , __OR__ static link file(*.a).
@@ -312,7 +310,10 @@ main.cpp:
 #include <gtest/gtest.h>
 
 using namespace std;
-
+//int add (int a, int b)
+//{
+//  return a+b;
+//}
 TEST(test,add1){
 	EXPECT_EQ(add(3,4),7);
     EXPECT_NE(add(3,4),6);
@@ -322,7 +323,7 @@ TEST(test,add1){
 	EXPECT_GE(add(3,4),7);
 }
 
-TEST(test,add1){
+TEST(test,add2){
 	EXPECT_EQ(add(3,4),7);
     EXPECT_NE(add(3,4),7);
 	EXPECT_LT(add(3,4),8);
@@ -632,9 +633,7 @@ What's the usage of this character?
 > 1. 程序的版本的校验、发布时间校验（如 \___TIME___的值是在编译时已写死的信息）
 > 2. 检查程序的编译性能
 
-
-
-### 4. macro function (with param list)
+###  macro function (with param list)
 
 >  宏定义是让编译器帮我们写代码
 
@@ -832,7 +831,7 @@ $ g++ -DDEBUG main.cpp
 
 it will open the DEBUG switch.
 
-## Write a test frame to mimic googletest frame
+##  Write a test frame to mimic googletest frame
 
 __Example1:__
 
@@ -923,6 +922,8 @@ Well donw.
 Now the htest.h will looks like below.
 
 ```c++
+//include/haizei/htest.h
+
 #ifndef _HTEST_H
 #define _HTEST_H
 
@@ -1016,3 +1017,54 @@ in test : hello world
 in main : hello world
 ````
 
+__Example:__
+
+```c++
+//main.cpp
+
+#include <iostream>
+
+#include <include/haizei/htest.h>
+
+using namespace std;
+
+int add(int a, int b){
+    return a+b;
+}
+
+TEST(test,add1){
+	EXPECT_EQ(add(3,4),7);
+        EXPECT_NE(add(3,4),6);
+	EXPECT_LT(add(3,4),8);
+	EXPECT_LE(add(3,4),7);
+	EXPECT_GT(add(3,4),6);
+	EXPECT_GE(add(3,4),7);
+}
+
+TEST(test,add2){
+	EXPECT_EQ(add(3,4),7);
+        EXPECT_NE(add(3,4),7);
+	EXPECT_LT(add(3,4),8);
+	EXPECT_LE(add(3,4),7);
+	EXPECT_GT(add(3,4),6);
+	EXPECT_GE(add(3,4),7);
+}
+
+
+int main()
+{
+	printf("add(3,4) = %d\n",add(3,4));   // add this line
+	return RUN_ALL_TESTS();
+}
+```
+
+Write a Makefile to built it:
+
+```makefile
+all:
+	g++ -std=c++11  -I./ main.cpp
+```
+
+the output is:
+
+![output of my_googletest](./output.my.gtest.png)
