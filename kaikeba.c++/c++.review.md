@@ -630,7 +630,7 @@ What's the usage of this character?
 
 
 
-### 4. macro function 
+### 4. macro function (with param list)
 
 __Example:__
 
@@ -687,6 +687,141 @@ __func__ = main
 __PRETTY_FUNCTION__ = int main()
 [main.cpp : main : 33] hello world
 [main.cpp : main : 35] hello Mars
+```
+
+
+
+__Example:__ add a switch to open LOG or NOT
+
+change original LOG macro from:
+
+```c++
+#define LOG(frm,args...) { \
+	printf("[%s : %s : %d] ",__FILE__,__func__,__LINE__); \
+	printf(frm,##args); \
+	printf("\n"); \
+}
+```
+
+To:
+
+```c++
+int debug=1;
+
+#define LOG(frm,args...)  do{ \
+  if(!debug) break; \
+	printf("[%s : %s : %d] ",__FILE__,__func__,__LINE__); \
+	printf(frm,##args); \
+	printf("\n"); \
+}while(0)
+```
+
+__TIPS__: write the function in a while loop, so we can break ;).  but it's not the best solution, see below.
+
+
+
+__Example__: add a switch to open LOG or NOT use "#ifdef"
+
+![ifdef_macro](./ifdef_macro.png)
+
+
+
+__We can use 条件编译 to do 代码剪裁.__
+
+main.cpp:
+
+```c++
+using namespace std;
+
+#define S(a,b) a*b
+
+#define DEBUG // open/cloes the LOG switch
+
+#ifdef DEBUG
+
+#define LOG(frm,args...)  { \
+	printf("[%s : %s : %d] ",__FILE__,__func__,__LINE__); \
+	printf(frm,##args); \
+	printf("\n"); \
+}
+
+#else
+
+#define LOG(frm,args...)
+
+#endif
+
+
+int main()
+{
+  printf("result:%d",S(3+6,4));
+  int n;
+  S(int,p)=&n;
+
+  printf("__DATE__ = %s\n", __DATE__);//string type.   date  when compiling this file
+  printf("__TIME__ = %s\n", __TIME__);//string type.   time  when compiling this file
+  printf("__FILE__ = %s\n", __FILE__);//string type.   filename
+  printf("__LINE__ = %d\n", __LINE__);//int    type.   line number
+  printf("__func__ = %s\n", __func__);//string type.   current function name, only the name
+  printf("__PRETTY_FUNCTION__ = %s\n", __PRETTY_FUNCTION__);  // string type.    whole current function name, including return value and params
+
+  LOG("hello world");
+  int n1;
+  LOG("hello Mars");
+  return 0;
+}
+```
+
+the output is not the Best solution because you need to change the code inner. see a better solution below.
+
+__Example__: Use "-D" compile solution and "#ifdef".
+
+main.cpp:
+
+```c++
+using namespace std;
+
+#define S(a,b) a*b
+
+#ifdef DEBUG
+
+#define LOG(frm,args...)  { \
+	printf("[%s : %s : %d] ",__FILE__,__func__,__LINE__); \
+	printf(frm,##args); \
+	printf("\n"); \
+}
+
+#else
+
+#define LOG(frm,args...)
+
+#endif
+
+
+int main()
+{
+  printf("result:%d",S(3+6,4));
+  int n;
+  S(int,p)=&n;
+
+  printf("__DATE__ = %s\n", __DATE__);//string type.   date  when compiling this file
+  printf("__TIME__ = %s\n", __TIME__);//string type.   time  when compiling this file
+  printf("__FILE__ = %s\n", __FILE__);//string type.   filename
+  printf("__LINE__ = %d\n", __LINE__);//int    type.   line number
+  printf("__func__ = %s\n", __func__);//string type.   current function name, only the name
+  printf("__PRETTY_FUNCTION__ = %s\n", __PRETTY_FUNCTION__);  // string type.    whole current function name, including return value and params
+
+  LOG("hello world");
+  int n1;
+  LOG("hello Mars");
+  return 0;
+}
+```
+
+and then we add "-D" option to open a macro.
+
+```c++
+$ g++ -DDEBUG main.cpp
 ```
 
 
