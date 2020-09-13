@@ -467,3 +467,63 @@ int main()
 the output is:
 
 ![output2](./color.printf.config.close.mode.2.png)
+
+## Debug print log
+
+### 1. predeal command
+
+Symbol:"#", the symbol means this the group of predeal, it contains many members , MACRO is one of these.
+
+```c++
+#include
+
+#define
+```
+
+### 2. Macro withour params
+
+```c++
+# define PI 3.1415926
+```
+
+
+
+### 3. Macro with params
+
+```c++
+# define S(a,b) a*b
+```
+
+if main.cpp is:
+
+```c++
+//main.cpp
+
+#include <iostream>
+int main()
+{
+  printf("result:%d",S(3+6,4)); 
+  return 0;
+}
+```
+
+the value is "27" rather than "36". why? use g++ -E to check:
+
+```c++
+g++ -E main.cpp
+```
+
+the output is :
+
+```c++
+...
+...
+
+int main()
+{
+  printf("result:%d",3+6*4);
+  return 0;
+}
+```
+
+so we know, the Macro is just __REPLACE__ .
