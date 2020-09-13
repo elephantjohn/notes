@@ -527,3 +527,44 @@ int main()
 ```
 
 so we know, the Macro is just __REPLACE__ .
+
+__Examle__:
+
+the main.cpp:
+
+```c++
+// main.cpp
+
+#include <iostream>
+
+# define S(a,b) a*b
+
+int main()
+{
+  printf("result:%d",S(3+6,4));
+  int n;
+  S(int,p)=&n;
+  return 0;
+}
+```
+
+it can build successful, 
+
+and the output of :
+
+```c++
+g++ -E main.cpp
+```
+
+ is:
+
+```c++
+int main()
+{
+  printf("result:%d",3+6*4);
+  int n;
+  int*p=&n;
+  return 0;
+}
+```
+
