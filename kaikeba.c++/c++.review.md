@@ -1068,3 +1068,123 @@ all:
 the output is:
 
 ![output of my_googletest](./output.my.gtest.png)
+
+GREAT.Now, let's make it better, see the example below, we add the dealing when "TEST" failed.
+
+__Example__:
+
+```c++
+// include/haizei/htest.h
+
+#ifndef _HTEST_H
+#define _HTEST_H
+
+#define COLOR(msg,code) "\033[0;1;" #code "m" msg "\033[0m"  // "#code" transfer "code" to a string
+
+#define RED(msg)     COLOR(msg,31)
+#define GREEN(msg)   COLOR(msg,32)
+#define YELLOW(msg)  COLOR(msg,33)
+#define BLUE(msg)    COLOR(msg,34)
+
+
+
+
+#define EXPECT(a,comp,b) { \
+	if(!((a) comp (b))){ \
+		printf(YELLOW("    %s:%d Failure\n"),__FILE__,__LINE__); \
+                printf(YELLOW("       Expect: (%s) (%s) (%s),actual: %d vs %d\n"),#a,#comp,#b,(a),(b)); \
+	} \
+}
+
+#define EXPECT_EQ(a,b) EXPECT(a,==,b)
+#define EXPECT_NE(a,b) EXPECT(a,!=,b)
+#define EXPECT_LT(a,b) EXPECT(a,<,b)
+#define EXPECT_LE(a,b) EXPECT(a,<=,b)
+#define EXPECT_GT(a,b) EXPECT(a,>,b)
+#define EXPECT_GE(a,b) EXPECT(a,>=,b)
+
+#define TEST(a,b) \
+void a##_##b() ; \
+__attribute__((constructor)) \
+void reg_##a##_##b() { \
+ add_func(a##_##b, #a "." #b); \
+} \
+void a##_##b() // see main.cpp to see the other parts of the function, so you know why the 'void a##_##b() is an end.''
+
+struct {
+   void (*func)();
+   const char * func_name;
+}func_arr[1000]; // now best empliment , but can work .
+int func_cnt=0;
+
+void add_func(void (*func)() ,const char* str){
+    func_arr[func_cnt].func = func;
+    func_arr[func_cnt].func_name = str;
+    func_cnt ++;
+    return ;
+}
+
+int RUN_ALL_TESTS(){
+    for (int i=0;i<func_cnt;i++){
+         printf(GREEN("[ RUN   ] ") "%s\n" ,func_arr[i].func_name);
+         func_arr[i].func();
+    }
+    return 0;
+}
+#endif
+```
+
+```c++
+// main.cpp
+
+#include <iostream>
+
+#include <include/haizei/htest.h>
+using namespace std;
+
+int add(int a, int b){
+    return a+b;
+}
+
+TEST(test,add1){
+	EXPECT_EQ(add(3,4),7);
+        EXPECT_NE(add(3,4),6);
+	EXPECT_LT(add(3,4),8);
+	EXPECT_LE(add(3,4),7);
+	EXPECT_GT(add(3,4),6);
+	EXPECT_GE(add(3,4),7);
+}
+
+TEST(test,add2){
+	EXPECT_EQ(add(3,4),7);
+        EXPECT_NE(add(3,4),7);
+	EXPECT_LT(add(3,4),8);
+	EXPECT_LE(add(3,4),7);
+	EXPECT_GT(add(3,4),6);
+	EXPECT_GE(add(3,4),7);
+}
+
+
+int main()
+{
+	printf("add(3,4) = %d\n",add(3,4));   // add this line
+	return RUN_ALL_TESTS();
+}
+```
+
+Makefile:
+
+```makefile
+all:
+	g++ -std=c++11 -I./ main.cpp
+```
+
+then make it:
+
+```bash
+$ make
+```
+
+The output is:
+
+![output_2](./output2.my.gtest.png)
