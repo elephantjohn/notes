@@ -568,3 +568,126 @@ int main()
 }
 ```
 
+Why? Because the Macro REPLACE the S(int,p)-->int*p
+
+__TIPS__:
+
+> c语言----预处理--->待编译源码（最后的源码）----编译----->目标文件----链接----->可执行程序
+
+
+
+__TIPS:__
+
+The macro in compiler:
+
+![marco](./macro.png)
+
+ __Example:__
+
+mian.cpp:
+
+```c++
+// main.cpp
+
+
+#include <iostream>
+
+# define S(a,b) a*b
+
+int main()
+{
+  printf("result:%d",S(3+6,4));
+  int n;
+  S(int,p)=&n;
+
+  printf("__DATE__ = %s\n", __DATE__);//string type.   date
+  printf("__TIME__ = %s\n", __TIME__);//string type.   time
+  printf("__FILE__ = %s\n", __FILE__);//string type.   filename
+  printf("__LINE__ = %d\n", __LINE__);//int    type.   line number
+  printf("__func__ = %s\n", __func__);//string type.   current function name, only the name
+  printf("__PRETTY_FUNCTION__ = %s\n", __PRETTY_FUNCTION__);  // string type.    whole current function name, including return value and params
+  return 0;
+}
+```
+
+The output is:
+
+```bash
+result:27__DATE__ = Sep 13 2020
+__TIME__ = 12:52:06
+__FILE__ = main.cpp
+__LINE__ = 18
+__func__ = main
+__PRETTY_FUNCTION__ = int main()
+```
+
+The macro is built in  待编译源码， so the value of the input will not change in later time, beause the info in the macro is built in the 待编译源码, it's won't changed in runnig time.
+
+What's the usage of this character?
+
+> 1. 程序的版本的校验、发布时间校验（如 \___TIME___的值是在编译时已写死的信息）
+> 2. 检查程序的编译性能
+
+
+
+### 4. macro function 
+
+__Example:__
+
+main.cpp:
+
+```c++
+// main.cpp
+
+#include <iostream>
+using namespace std;
+
+#define S(a,b) a*b
+
+#define LOG(frm,args...) { \
+	printf("[%s : %s : %d] ",__FILE__,__func__,__LINE__); \
+	printf(frm,##args); \
+	printf("\n"); \
+}
+// the "args..."" is the param list, it can be 0,1,2,...n params
+//  the "args..."" can be written as "abcs...","abes...","aaa...","bbb...",etc. 
+
+
+
+int main()
+{
+  printf("result:%d",S(3+6,4));
+  int n;
+  S(int,p)=&n;
+
+  printf("__DATE__ = %s\n", __DATE__);//string type.   date  when compiling this file
+  printf("__TIME__ = %s\n", __TIME__);//string type.   time  when compiling this file
+  printf("__FILE__ = %s\n", __FILE__);//string type.   filename
+  printf("__LINE__ = %d\n", __LINE__);//int    type.   line number
+  printf("__func__ = %s\n", __func__);//string type.   current function name, only the name
+  printf("__PRETTY_FUNCTION__ = %s\n", __PRETTY_FUNCTION__);  // string type.    whole current function name, including return value and params
+
+  LOG("hello world");
+  int n1;
+  LOG("hello Mars");
+  return 0;
+}
+```
+
+
+
+the output is :
+
+```bash
+result:27__DATE__ = Sep 13 2020
+__TIME__ = 14:00:19
+__FILE__ = main.cpp
+__LINE__ = 29
+__func__ = main
+__PRETTY_FUNCTION__ = int main()
+[main.cpp : main : 33] hello world
+[main.cpp : main : 35] hello Mars
+```
+
+
+
