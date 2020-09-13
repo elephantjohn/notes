@@ -896,3 +896,123 @@ Include/haizei/htest.h:
 #endif
 ```
 
+we can add some COLOR LOG message:
+
+```c++
+#define RED(msg) "\033[0;1;31m" msg "\033[0m"
+#define GREEN(msg) "\033[0;1;32m" msg "\033[0m"
+#define YELLOW(msg) "\033[0;1;33m" msg "\033[0m"
+#define BLUE(msg) "\033[0;1;34m" msg "\033[0m"
+```
+
+But it's not good because of too much duplicated logic codes. so it's junk code.
+
+see a better version below.
+
+```c++
+#define COLOR(msg,code) "\033[0;1;" #code "m" msg "\033[0m"  // "#code" transfer "code" to a string
+
+#define RED(msg)     COLOR(msg,31)
+#define GREEN(msg)   COLOR(msg,32)
+#define YELLOW(msg)  COLOR(msg,33)
+#define BLUE(msg)    COLOR(msg,34)
+```
+
+Well donw.
+
+Now the htest.h will looks like below.
+
+```c++
+#ifndef _HTEST_H
+#define _HTEST_H
+
+#define COLOR(msg,code) "\033[0;1;" #code "m" msg "\033[0m"  // "#code" transfer "code" to a string
+
+#define RED(msg)     COLOR(msg,31)
+#define GREEN(msg)   COLOR(msg,32)
+#define YELLOW(msg)  COLOR(msg,33)
+#define BLUE(msg)    COLOR(msg,34)
+
+
+
+
+#define EXPECT(a,comp,b) { \
+	if(!((a) comp (b))){ \
+		printf("%s","error"); \
+	} \
+}
+
+#define EXPECT_EQ(a,b) EXPECT(a,==,b)
+#define EXPECT_NE(a,b) EXPECT(a,!=,b)
+#define EXPECT_LT(a,b) EXPECT(a,<,b)
+#define EXPECT_LE(a,b) EXPECT(a,<=,b)
+#define EXPECT_GR(a,b) EXPECT(a,>,b)
+#define EXPECT_GE(a,b) EXPECT(a,>=,b)
+
+
+#endif
+```
+
+Ok, Now let's write a test code.
+
+main.cpp
+
+```c++
+#include <iostream>
+#include <include/haizei/htest.h>
+
+using namespace std;
+
+
+int main()
+{
+    printf("hello world\n");
+    printf(RED("hello world\n"));
+    printf(GREEN("hello world\n"));
+    printf(YELLOW("hello world\n"));
+    printf(BLUE("hello world\n"));
+    return 0;
+}
+```
+
+```c++
+$ g++ -I./ main.cpp
+```
+
+__TIPS:__  a difference between "<>" and ""
+
+```c++  
+#include <include/haizei/htest.h>    ==> g++ -I./ main.cpp
+#include "include/haizei/htest.h"    ==> g++ main.cpp
+```
+
+### 5. use attribute to registry a function
+
+if we add the attribute to a function , then the funciton will execute before main function.
+
+__Example__:
+
+```c++
+#include <iostream>
+using namespace std;
+
+__attribute__((constructor))
+void test()
+{
+	printf("in test : hello world\n");
+}
+
+int main()
+{
+	printf("in main : hello world\n");
+	return 0;
+}
+```
+
+the output is:
+
+````bash
+in test : hello world
+in main : hello world
+````
+
