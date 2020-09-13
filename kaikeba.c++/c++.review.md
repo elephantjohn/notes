@@ -482,6 +482,8 @@ Symbol:"#", the symbol means this the group of predeal, it contains many members
 
 ### 2. Macro withour params
 
+>  宏定义是让编译器帮我们写代码
+
 ```c++
 # define PI 3.1415926
 ```
@@ -489,6 +491,8 @@ Symbol:"#", the symbol means this the group of predeal, it contains many members
 
 
 ### 3. Macro with params
+
+>  宏定义是让编译器帮我们写代码
 
 ```c++
 # define S(a,b) a*b
@@ -631,6 +635,8 @@ What's the usage of this character?
 
 
 ### 4. macro function (with param list)
+
+>  宏定义是让编译器帮我们写代码
 
 __Example:__
 
@@ -824,5 +830,69 @@ and then we add "-D" option to open a macro.
 $ g++ -DDEBUG main.cpp
 ```
 
+it will open the DEBUG switch.
 
+## Write a test frame to mimic googletest frame
+
+__Example1:__
+
+Include/haizei/htest.h:
+
+```c++
+#ifndef _HTEST_H
+#define _HTEST_H
+
+#define EXPECT_EQ(a,b) { \
+	if(!((a)==(b))){ \
+		printf("%s","error"); \
+	} \
+}
+#define EXPECT_NE(a,b) { \
+	if(!((a)!=(b))){ \
+		printf("%s","error"); \
+	} \
+}
+#define EXPECT_GT(a,b) { \
+	if(!((a)>=(b))){ \
+		printf("%s","error"); \
+	} \
+}
+#define EXPECT_LT(a,b) { \
+	if(!((a)<=(b))){ \
+		printf("%s","error"); \
+	} \
+}
+#endif
+```
+
+But it's not good because of too much duplicated logic codes. so it's junk code.
+
+see a better version below.
+
+
+
+__Example2__:
+
+Include/haizei/htest.h:
+
+```c++
+#ifndef _HTEST_H
+#define _HTEST_H
+
+#define EXPECT(a,comp,b) { \
+	if(!((a) comp (b))){ \
+		printf("%s","error"); \
+	} \
+}
+
+#define EXPECT_EQ(a,b) EXPECT(a,==,b)
+#define EXPECT_NE(a,b) EXPECT(a,!=,b)
+#define EXPECT_LT(a,b) EXPECT(a,<,b)
+#define EXPECT_LE(a,b) EXPECT(a,<=,b)
+#define EXPECT_EQ(a,b) EXPECT(a,>,b)
+#define EXPECT_GR(a,b) EXPECT(a,>=,b)
+
+
+#endif
+```
 
