@@ -296,7 +296,9 @@ __CONCLUSTION OF the EXAMPLE:__
 dont defination functions in .h file
 ```
 
-## googletest frame
+## DAY2
+
+### googletest frame
 
 after link, the object files can generate executive file , __OR__ static link file(*.a).
 
@@ -1187,4 +1189,130 @@ $ make
 
 The output is:
 
-![output_2](./output2.my.gtest.png)
+![output_2](./output2.my.gtest.png) 
+
+## day 3
+
+### QUIEKC SORT
+
+> ORDER:
+>
+> 1. Choose a pivot
+> 2. partition 
+> 3. reverse to left side and right side
+
+#### Version1
+
+quicksort.cc:
+
+```c++
+void quick_sort_v1(int * arr, int l, int r)
+{
+	if(l >= r) return;
+	int x = l, y = r, z = arr[l];
+	while(x < y)
+	{
+		while (x < y && arr[y] >= z ) --y;
+        if (x < y) arr[x++] = arr[y];
+		while (x < y && arr[x] <= z ) ++x;
+		if (x < y) arr[y--] = arr[x];
+	} 
+  	arr[x] = z;
+	quick_sort_v1(arr,l,x-1);
+	quick_sort_v1(arr,x+1,r);
+	return;
+}
+```
+
+quicksort_test.cpp:
+
+```c++
+#include <iostream>
+#include "mytest.h"
+#include "quicksort.h"
+
+using namespace std;
+
+int main()
+{
+    #define MAX_N 10000000
+	int *arr = getRandData(MAX_N);
+    
+	TEST(quick_sort_v1,arr,MAX_N);
+    #undef  MAX_N
+	return 0;
+}
+```
+
+mytest.h:
+
+```c++
+#ifndef _MYTEST_H
+#define _MYTETS_H 
+#include <cstring>
+
+#define COLOR(msg,code) "\033[0;1;" #code "m" msg "\033[0m"  // "#code" transfer "code" to a string
+
+#define RED(msg)     COLOR(msg,31)
+#define GREEN(msg)   COLOR(msg,32)
+#define YELLOW(msg)  COLOR(msg,33)
+#define BLUE(msg)    COLOR(msg,34)
+
+int *getRandData(int n)
+{
+	int *arr = (int *)malloc(sizeof(int) *n);
+	for (int i=0; i<n; i++) arr[i] = rand() % n;
+	return  arr;
+}
+
+int check(int *arr, int n)
+{
+	for (int i=1; i <n; i++)
+	{
+		if (arr[i] < arr[i-1]) return false;
+	}
+	return true;
+}
+
+#define TEST(func,arr,n) __TEST(func,arr,n,#func)//骚操作，封装了两层，这样则可以将"func"函数名作为参数
+
+void __TEST(void (*func)(int*,int,int) , int *arr, int n, const char *func_name)
+{
+	int *temp = (int *)malloc(sizeof(int *) * n);
+	memcpy(temp,arr,sizeof(int) * n);
+	long long b = clock();
+	func(temp,0,n-1);
+    long long e = clock();
+	if(check(temp,n))
+	{
+		printf(GREEN("[    OK     ]"));
+	}
+	else
+	{
+		printf(RED("[    FAILED    ]"));
+	}
+	printf("  %s  ",func_name);
+	printf(YELLOW("(%lld ms)\n"),1000 * (e-b) /CLOCKS_PER_SEC);
+	return;
+}
+#endif
+```
+
+quicksort.h:
+
+```c++
+#ifndef _QUICK_SORT_H
+#define _QUICK_SORT_H
+
+void quick_sort_v1(int *, int, int);
+
+#endif
+```
+
+Makefile:
+
+```cmake
+all:
+	g++ quicksort_test.cpp    quicksort.cc
+```
+
