@@ -1316,3 +1316,46 @@ all:
 	g++ quicksort_test.cpp    quicksort.cc
 ```
 
+## Day 4 part 1
+
+## virtyal function
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+
+class A
+{
+public:
+	virtual void say(int x){
+		cout<< "class A" << endl;
+	}
+};
+
+
+class B : public A
+{
+public:
+	void say(int x){
+		cout << this << endl;
+		cout <<"class  B : " << x << endl;
+	}
+};
+
+typedef void (*func)(void*,int);// the first param will be "this" point.
+
+int main()
+{   
+    cout << "sizeof(B):" << sizeof(B) << endl;
+    B b;
+	A &a = b;
+	A *c = &b;
+	((func **)(&b))[0][0](&b,123);//first param is "this" point.
+	b.say(123);
+	a.say(123);
+	c->say(123);
+	return 0;
+}
+```
+
